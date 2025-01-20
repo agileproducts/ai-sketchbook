@@ -1,0 +1,15 @@
+[project]
+name = "mlx-models"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "", email = ""},
+]
+dependencies = ["mlx>=0.22.0", "mlx-lm>=0.21.1"]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
