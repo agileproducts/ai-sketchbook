@@ -18,7 +18,7 @@ def ai_magick(text: str):
   1. **Extract the title** Please try to find the title of the paper.
   2. **Extract the abstract** Please try to find the abstract of the paper.
   3. **Extract the authors** Please try to find the authors of the paper.
-  4. **Extract the author contribution statement** Please try to find the date of the paper.
+  4. **Extract the author contribution statement** Please try to find the statement that says who did what
 
   **Output format:** 
   * Present the title, abstract and authors in a clear and organized manner.
