@@ -1,0 +1,6 @@
+#Claude
+
+I want to make a set of training data to teach a model.
+Please make a delimited file with 'input' and 'output'. The 'input' column should contain examples of a person's name as it might appear for the author of a scholarly paper. The examples should sometimes and sometimes not include titles like 'Professor', sometimes and sometimes not include middle names, middle initials or common name suffixes. Try to make a globally diverse sample.
+The 'output' column should contain a JSON representation which splits each name into the parts that apply, using fields like 'title', 'first_name', 'last_name', 'middle_name', 'suffix'. 
+Please provide 200 examples.
