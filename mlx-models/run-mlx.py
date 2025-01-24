@@ -1,6 +1,6 @@
 from mlx_lm import load, generate
 
-model, tokenizer = load("mlx_model")
+model, tokenizer = load("../models/mlx-gemma-2b-it")
 
 prompt = "What is a cat?"
 messages = [{"role": "user", "content": prompt}]

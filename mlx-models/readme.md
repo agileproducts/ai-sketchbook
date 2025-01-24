@@ -22,6 +22,10 @@ The model is quantized to 4 bits by running:
 
 By default this saves the quantized model to `mlx_model`. Looks like it takes about 1.5GB of disk space.
 
+I have moved it to ../models/mlx-gemma-2b-it/ so that it can be reused by other parts of the project.
+
+`mv mlx_model ../models/mlx-gemma-2b-it`
+
 ## Run
 
 `pdm run run-mlx.py`
