@@ -4,3 +4,4 @@ tensorflow
 .DS_Store
 .env
 models/*
+*.tmp
