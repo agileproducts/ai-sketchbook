@@ -14,6 +14,8 @@ The model is downloaded from [Hugging Face](https://huggingface.co). To do this 
 
 Add an [access token](https://huggingface.co/docs/hub/en/security-tokens) to be able to download the model.
 
+`pdm run huggingface-cli login`
+
 ## Quantize the model
 
 The model is quantized to 4 bits by running:

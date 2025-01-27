@@ -39,7 +39,7 @@ def parse_paper(arxiv_id: str) -> None:
   papers_dir = Path('papers')
   paper = papers_dir / f'arxiv_{arxiv_id}.md'
   with open(paper, 'r') as file:
-    content = file.read(3000) #limit to so many characters
+    content = file.read(5000) #limit to so many characters
 
     #temporary understanding what is going on here
     mytext = """
