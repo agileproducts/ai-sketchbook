@@ -1,9 +1,12 @@
 import sys
+from dataclasses import dataclass, field
 
 from dotenv import load_dotenv
 from typesafe_sdk import Choice, TypeSafeClient
 
 load_dotenv()
+
+INVALID = "invalid"
 
 CATEGORIES = {
     "academic": "Belongs to a university, college, school, or research institution",
@@ -11,6 +14,18 @@ CATEGORIES = {
     "non_academic_institution": "Belongs to a government body, hospital, NGO, or other non-company institution",
     "generic": "A free or consumer email provider such as gmail.com, qq.com, outlook.com, or yahoo.com",
 }
+
+
+@dataclass
+class Classification:
+    email: str
+    category: str
+    confidence: float | None = None
+    probabilities: dict[str, float] = field(default_factory=dict)
+
+    @property
+    def is_valid(self) -> bool:
+        return self.category != INVALID
 
 
 def looks_like_email(s: str) -> bool:
@@ -30,19 +45,9 @@ def looks_like_email(s: str) -> bool:
     return True
 
 
-def main(argv: list[str]) -> int:
-    if len(argv) < 2:
-        print("error: no email supplied", file=sys.stderr)
-        print("usage: uv run classify_email.py EMAIL", file=sys.stderr)
-        return 1
-
-    email = argv[1]
+def classify(email: str, client: TypeSafeClient) -> Classification:
     if not looks_like_email(email):
-        print(f"error: not a valid email address: {email!r}", file=sys.stderr)
-        print("usage: uv run classify_email.py EMAIL", file=sys.stderr)
-        return 1
-
-    client = TypeSafeClient()
+        return Classification(email=email, category=INVALID)
 
     response = client.system_one(
         state={"email": email},
@@ -55,11 +60,30 @@ def main(argv: list[str]) -> int:
     )
 
     answer = response.answers["institution_type"]
-    print(f"email      : {email}")
-    print(f"category   : {answer.choice}")
-    print(f"confidence : {answer.confidence:.2f}")
+    return Classification(
+        email=email,
+        category=answer.choice,
+        confidence=answer.confidence,
+        probabilities=dict(answer.probabilities),
+    )
+
+
+def main(argv: list[str]) -> int:
+    if len(argv) < 2:
+        print("error: no email supplied", file=sys.stderr)
+        print("usage: uv run classify_email.py EMAIL", file=sys.stderr)
+        return 1
+
+    result = classify(argv[1], TypeSafeClient())
+
+    print(f"email      : {result.email}")
+    print(f"category   : {result.category}")
+    if result.confidence is None:
+        print("source     : structural check (no API call)")
+        return 0
+    print(f"confidence : {result.confidence:.2f}")
     print("probabilities:")
-    for name, prob in sorted(answer.probabilities.items(), key=lambda kv: -kv[1]):
+    for name, prob in sorted(result.probabilities.items(), key=lambda kv: -kv[1]):
         print(f"  {prob:.2f}  {name}")
     return 0
 
